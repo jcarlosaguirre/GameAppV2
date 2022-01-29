@@ -55,6 +55,10 @@ class HomeActivity : AppCompatActivity() {
             this.setIcon(R.drawable.icon_section_adventures)
             this.text = null
         }
+        tabs.getTabAt( 3 )?.apply {
+            this.setIcon(R.drawable.icon_section_settings)
+            this.text = null
+        }
 
         // Listener on tab changed
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -95,6 +99,13 @@ class HomeActivity : AppCompatActivity() {
             }
             1 -> {
                 fabButton.setImageDrawable( resources.getDrawable( R.drawable.icon_mission, this@HomeActivity.theme ) )
+            }
+            2 -> {
+                fabButton.setImageDrawable( resources.getDrawable( R.drawable.icon_mission, this@HomeActivity.theme ) )
+            }
+            3 -> {
+                fabButton.setImageDrawable( resources.getDrawable( R.drawable.icon_mission, this@HomeActivity.theme ) )
+
             }
         }
 

@@ -9,7 +9,8 @@ import com.example.gameappv2.R
 private val TAB_TITLES = arrayOf(
     R.string.tab_text_1,
     R.string.tab_text_2,
-    R.string.tab_text_3
+    R.string.tab_text_3,
+    R.string.tab_text_4
 )
 
 
@@ -17,7 +18,7 @@ private val sectionsList: Array<Fragment> = arrayOf(
     CharacterFragment.newInstance(),
     LobbyFragment.newInstance(),
     LobbyFragment.newInstance(),
-//    AdventuresFragment.newInstance()
+    PreferencesFragment.newInstance()
 )
 
 /**
@@ -36,10 +37,10 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) : 
             0 -> return sectionsList[0]
             1 -> return sectionsList[1]
             2 -> return sectionsList[2]
-
+            3 -> return sectionsList[3]
         }
 
-        return PlaceholderFragment.newInstance(position + 1)
+        return sectionsList[1]
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
