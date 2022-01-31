@@ -51,8 +51,6 @@ class CharacterFragment : Fragment() {
         // Binding
         _binding = FragmentCharacterBinding.inflate( inflater, container, false)
 
-
-
         binding.middleSectionBtn.setOnClickListener {
             changeMiddleSection()
         }
@@ -68,6 +66,10 @@ class CharacterFragment : Fragment() {
         setInnerFragments()
     }
 
+    /**
+     * Set stats and team fragments inside
+     *
+     */
     private fun setInnerFragments(){
         val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
 
@@ -124,4 +126,5 @@ class CharacterFragment : Fragment() {
         super.onDestroy()
         Toast.makeText(requireContext(), "Destroy", Toast.LENGTH_SHORT).show()
     }
+
 }

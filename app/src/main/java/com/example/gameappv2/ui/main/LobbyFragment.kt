@@ -40,6 +40,7 @@ class LobbyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        // Binding
         _binding = FragmentLobbyBinding.inflate( inflater, container, false )
 
         // Inflate the layout for this fragment

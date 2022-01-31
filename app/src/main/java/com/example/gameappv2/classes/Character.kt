@@ -15,6 +15,7 @@ class Character(private val base: SpriteObject,
 
     /**
      * Array joining all properties of character
+     *
      */
     private lateinit var _stats: Array<Int>
 
@@ -25,6 +26,7 @@ class Character(private val base: SpriteObject,
 
     /**
      * Initialize character based in if it's new or it has data already
+     *
      */
     private fun initCharacter(){
 
@@ -45,6 +47,7 @@ class Character(private val base: SpriteObject,
             }
         }
 
+        // Create array of player stats after setting them
         updateStats()
     }
 
@@ -61,6 +64,10 @@ class Character(private val base: SpriteObject,
     private fun setMagicPoints( x: Int = 1 ){ magic += x }
 
 
+    /**
+     * Available values for stats
+     *
+     */
     enum class Stat{
         LEVEL,
         HEALTH,
@@ -70,6 +77,12 @@ class Character(private val base: SpriteObject,
         MAGIC;
     }
 
+    /**
+     * Upgrade player stat by given value
+     *
+     * @param stat
+     * @param value
+     */
     fun setStats( stat: Stat, value: Int ) {
         when( stat.ordinal ){
             0 -> setLevelPoints( value )
@@ -82,10 +95,17 @@ class Character(private val base: SpriteObject,
 
     }
 
+    /**
+     * Update array of player stats
+     *
+     */
     fun updateStats(){
         _stats = arrayOf( level, health, defense, strength, attack, magic )
     }
 
+    /**
+     * Return player stats
+     */
     fun getStats(): Array<Int> { return _stats }
 
 }

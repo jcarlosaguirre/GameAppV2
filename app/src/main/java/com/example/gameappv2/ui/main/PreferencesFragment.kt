@@ -38,12 +38,11 @@ class PreferencesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         // Binding
         _binding = FragmentPreferencesBinding.inflate( inflater, container, false)
 
-
-
+        // Init transaction for instantiating a settings fragment with shared preferences
         val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
 
         val settingsFragment: Fragment = SettingsFragment()

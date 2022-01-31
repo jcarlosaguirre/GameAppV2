@@ -6,6 +6,12 @@ import com.example.gameappv2.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
+    /**
+     * Set shared preferences on default location and using the given xml resource
+     *
+     * @param savedInstanceState
+     * @param rootKey
+     */
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
     }
