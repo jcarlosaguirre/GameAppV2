@@ -1,22 +1,21 @@
 package com.example.gameappv2
 
-import android.content.res.Resources
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import com.example.gameappv2.ui.main.SectionsPagerAdapter
 import com.example.gameappv2.databinding.ActivityHomeBinding
+import com.example.gameappv2.models.SQLiteHelper
 
 class HomeActivity : AppCompatActivity() {
 
+    private lateinit var DBHelper: SQLiteHelper
     private lateinit var binding: ActivityHomeBinding
     private lateinit var fabButton: FloatingActionButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,11 +24,17 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        DBHelper = SQLiteHelper( applicationContext )
+        DBHelper.setDatabase()
+
+        DBHelper.fillCharactersTable()
+
         // Get floating action button
         fabButton = binding.fab
 
         // Set sections adapter for tabs
         setTabsAndSections()
+
     }
 
     // Initialize tabs
