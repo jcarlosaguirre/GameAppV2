@@ -14,11 +14,13 @@ import com.example.gameappv2.models.CharacterType
  * @property available
  */
 
-data class Character(
+data class GameCharacter(
     val name: String,
     val description: String,
     val type: CharacterType,
+    val stats: CharacterStats,
     val img_src: Int,
     val anim_src: Int,
     var available: Int
 )
+

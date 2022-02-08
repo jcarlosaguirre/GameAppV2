@@ -5,37 +5,70 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+import com.google.gson.Gson
 
-class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "amigos.db", null, 1) {
-
-    companion object {
-        lateinit var databaseR: SQLiteDatabase
-        lateinit var databaseW: SQLiteDatabase
-    }
+class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "gameappv2.db", null, 1) {
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val ordenCreacion = "CREATE TABLE characters (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT ,email TEXT)"
-        db!!.execSQL(ordenCreacion)
+        createTables( db )
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        val ordenBorrado = "DROP TABLE IF EXISTS amigos"
+        val ordenBorrado = "DROP TABLE IF EXISTS characters"
         db!!.execSQL(ordenBorrado)
         onCreate( db )
     }
 
-    fun setDatabase(){
-        databaseR = this.readableDatabase
-        databaseW = this.writableDatabase
+    fun resetDatabase(){
+        onUpgrade( this.writableDatabase, 1, 1)
     }
 
+    private fun createTables( db: SQLiteDatabase? ){
+        val ordenCreacion = "CREATE TABLE characters (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "nombre TEXT, " +
+                "description TEXT, " +
+                "type INTEGER, " +
+                "img_src TEXT, " +
+                "anim_src TEXT, " +
+                "available INTEGER" +
+                ")"
+        db!!.execSQL( ordenCreacion )
+    }
 
-    fun fillCharactersTable(){
+    fun isCharactersTableFilled(){
+
         val dataExists = "SELECT * FROM characters"
 
         /*Abrimos la base de datos en modo lectura*/
-        val cursor = databaseR.rawQuery(dataExists, null)
-        println("aaaaa " + cursor.count)
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(dataExists, null)
+        Log.i("AAAAAA--------", cursor.count.toString())
+
+        if(cursor.count == 0){
+            fillCharactersTable()
+        }
+    }
+
+    private fun fillCharactersTable(){
+        val characters = SpriteViewModel.characterSprites
+        val gson = Gson()
+        val values = ContentValues()
+        val db = this.writableDatabase
+
+        for (char in characters){
+            values.put("nombre", char.name)
+            values.put("description", char.description)
+//            values.put("type", gson.toJson(char.type).toByteArray())
+            values.put("type", char.type.ordinal)
+            values.put("img_src", char.img_src)
+            values.put("anim_src", char.anim_src)
+            values.put("available", char.available)
+            db.insert("characters", null, values)
+        }
+
+        db.close()
     }
 
 
@@ -46,7 +79,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "amigos.db", nu
         val db = this.writableDatabase
 
         /*Abrimos la base de datos en modo escritura*/
-        db.insert("amigos", null, datos)
+        db.insert("characters", null, datos)
         db.close()
     }
 
@@ -54,7 +87,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "amigos.db", nu
         val db: SQLiteDatabase = this.readableDatabase
 
         /*Abrimos la base de datos en modo lectura*/
-        val cursor = db.rawQuery("SELECT * FROM amigos", null)
+        val cursor = db.rawQuery("SELECT * FROM characters", null)
         return cursor
     }
 
@@ -66,7 +99,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "amigos.db", nu
         datos.put("email", email)
 
         val db = this.writableDatabase
-        db.update("amigos", datos, "id = ?", args)
+        db.update("characters", datos, "id = ?", args)
 
         db.close()
     }
@@ -76,7 +109,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "amigos.db", nu
 
 
         val db = this.writableDatabase
-        db.delete("amigos", "id = ?", args)
+        db.delete("characters", "id = ?", args)
 
         db.close()
     }

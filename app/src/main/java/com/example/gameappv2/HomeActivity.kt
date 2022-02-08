@@ -1,20 +1,32 @@
 package com.example.gameappv2
 
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
+import androidx.core.database.getBlobOrNull
+import com.example.gameappv2.classes.CharacterStats
+import com.example.gameappv2.classes.GameCharacter
 import com.example.gameappv2.ui.main.SectionsPagerAdapter
 import com.example.gameappv2.databinding.ActivityHomeBinding
+import com.example.gameappv2.models.CharacterType
 import com.example.gameappv2.models.SQLiteHelper
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var DBHelper: SQLiteHelper
     private lateinit var binding: ActivityHomeBinding
     private lateinit var fabButton: FloatingActionButton
+
+
+    companion object {
+        lateinit var DBHelper: SQLiteHelper
+        var characters: ArrayList<GameCharacter> = arrayListOf()
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,9 +37,8 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         DBHelper = SQLiteHelper( applicationContext )
-        DBHelper.setDatabase()
 
-        DBHelper.fillCharactersTable()
+//        DBHelper.isCharactersTableFilled()
 
         // Get floating action button
         fabButton = binding.fab
@@ -35,6 +46,27 @@ class HomeActivity : AppCompatActivity() {
         // Set sections adapter for tabs
         setTabsAndSections()
 
+        val charCursor = DBHelper.mostrarDatos()
+
+        if( charCursor!!.moveToFirst() ){
+
+            do{
+                val name = charCursor.getString( 0 )
+                val desc = charCursor.getString( 1 )
+                val type = charCursor.getInt( 3 )
+                val imgsrc = charCursor.getString( 4 )
+                val animsrc = charCursor.getString( 5 )
+                val available = charCursor.getInt( 6 )
+
+                val character = GameCharacter(name, desc, CharacterType.values()[ type ], CharacterStats(), imgsrc.toInt(), animsrc.toInt(), available)
+                characters.add( character )
+
+            } while( charCursor.moveToNext() )
+        }
+
+        if( characters.size > 0 ){
+
+        }
     }
 
     // Initialize tabs
@@ -46,6 +78,7 @@ class HomeActivity : AppCompatActivity() {
         viewPager.adapter = sectionsPagerAdapter
         viewPager.currentItem = 1
 
+        // Set icons on tabs
         val tabs: TabLayout = binding.tabs
         tabs.setupWithViewPager(viewPager)
         tabs.getTabAt( 0 )?.apply {
@@ -84,13 +117,24 @@ class HomeActivity : AppCompatActivity() {
     private fun setFabActions( tabPosition: Int ){
         when ( tabPosition ){
             0 -> {
+                fabButton.setImageDrawable( resources.getDrawable( R.drawable.icon_customize_team, this@HomeActivity.theme ) )
                 fabButton.setOnClickListener { view ->
                     Toast.makeText( this@HomeActivity, "section 0", Toast.LENGTH_SHORT ).show()
                 }
             }
             1 -> {
+                fabButton.setImageDrawable( resources.getDrawable( R.drawable.icon_mission, this@HomeActivity.theme ) )
                 fabButton.setOnClickListener { view ->
                     Toast.makeText( this@HomeActivity, "section 1", Toast.LENGTH_SHORT ).show()
+                }
+            }
+            2 -> {
+                fabButton.setImageDrawable( resources.getDrawable( R.drawable.icon_mission, this@HomeActivity.theme ) )
+            }
+            3 -> {
+                fabButton.setImageDrawable( resources.getDrawable( R.drawable.icon_delete_data, this@HomeActivity.theme ) )
+                fabButton.setOnClickListener { view ->
+                    DBHelper.resetDatabase()
                 }
             }
         }
@@ -100,16 +144,15 @@ class HomeActivity : AppCompatActivity() {
     private fun changesOnTabSelected( tabPosition: Int ){
         when ( tabPosition ){
             0 -> {
-                fabButton.setImageDrawable( resources.getDrawable( R.drawable.icon_customize_team, this@HomeActivity.theme ) )
+
             }
             1 -> {
-                fabButton.setImageDrawable( resources.getDrawable( R.drawable.icon_mission, this@HomeActivity.theme ) )
+
             }
             2 -> {
-                fabButton.setImageDrawable( resources.getDrawable( R.drawable.icon_mission, this@HomeActivity.theme ) )
+
             }
             3 -> {
-                fabButton.setImageDrawable( resources.getDrawable( R.drawable.icon_mission, this@HomeActivity.theme ) )
 
             }
         }

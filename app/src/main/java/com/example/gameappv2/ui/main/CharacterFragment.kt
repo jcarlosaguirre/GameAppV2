@@ -1,13 +1,17 @@
 package com.example.gameappv2.ui.main
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
 import com.example.gameappv2.databinding.FragmentCharacterBinding
 import androidx.fragment.app.FragmentTransaction
+import com.example.gameappv2.HomeActivity
+import com.example.gameappv2.R
 import com.example.gameappv2.ui.main.character.StatsFragment
 import com.example.gameappv2.ui.main.character.TeamFragment
 
@@ -29,9 +33,32 @@ class CharacterFragment : Fragment() {
 
     private var middleSection: Boolean = false
 
+    private lateinit var characterExpositor: ImageButton
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment CharacterFragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(/*param1: String, param2: String*/) =
+            CharacterFragment()
+//                .apply {
+//                arguments = Bundle().apply {
+//                    putString(ARG_PARAM1, param1)
+//                    putString(ARG_PARAM2, param2)
+//                }
+//            }
+    }
+
     // TODO: Rename and change types of parameters
-//    private var param1: String? = null
-//    private var param2: String? = null
+    //    private var param1: String? = null
+    //    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +91,13 @@ class CharacterFragment : Fragment() {
 
         // Fragments for stats and team choosing
         setInnerFragments()
+
+        val character = HomeActivity.characters[3]
+
+        characterExpositor = binding.spriteExpositor
+        characterExpositor.setImageResource( character.anim_src )
+        var anim = characterExpositor.drawable as AnimationDrawable
+        anim.start()
     }
 
     /**
@@ -94,27 +128,6 @@ class CharacterFragment : Fragment() {
 //            binding.statsData.visibility = View.VISIBLE
 //            binding.teamMembers.visibility = View.GONE
 //        }
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CharacterFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(/*param1: String, param2: String*/) =
-            CharacterFragment()
-//                .apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
     }
 
     override fun onResume() {

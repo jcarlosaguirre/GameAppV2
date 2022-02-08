@@ -1,10 +1,12 @@
 package com.example.gameappv2.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.gameappv2.HomeActivity
 import com.example.gameappv2.databinding.FragmentLobbyBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -45,6 +47,17 @@ class LobbyFragment : Fragment() {
 
         // Inflate the layout for this fragment
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        Log.i("AAAAAA--------", "onViewCreated")
+        HomeActivity.DBHelper.isCharactersTableFilled()
+
+        binding.button.setOnClickListener {
+            HomeActivity.DBHelper.resetDatabase()
+        }
     }
 
     companion object {
