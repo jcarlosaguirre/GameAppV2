@@ -28,7 +28,8 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "gameappv2.db",
                 "type INTEGER, " +
                 "img_src TEXT, " +
                 "anim_src TEXT, " +
-                "available INTEGER" +
+                "available INTEGER, " +
+                "team INTEGER" +
                 ")"
         db!!.execSQL( ordenCreacion )
     }
@@ -62,6 +63,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "gameappv2.db",
             values.put("img_src", char.img_src)
             values.put("anim_src", char.anim_src)
             values.put("available", char.available)
+            values.put("team", true)
             db.insert("characters", null, values)
         }
 
@@ -84,11 +86,19 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "gameappv2.db",
         db.close()
     }
 
-    fun mostrarDatos(): Cursor? {
+    fun getCharacters(): Cursor? {
         val db: SQLiteDatabase = this.readableDatabase
 
         /*Abrimos la base de datos en modo lectura*/
         val cursor = db.rawQuery("SELECT * FROM characters", null)
+        return cursor
+    }
+
+    fun getCharactersByField( field: String, value: String ): Cursor? {
+        val db: SQLiteDatabase = this.readableDatabase
+
+        /*Abrimos la base de datos en modo lectura*/
+        val cursor = db.rawQuery("SELECT * FROM characters WHERE $field = $value", null)
         return cursor
     }
 

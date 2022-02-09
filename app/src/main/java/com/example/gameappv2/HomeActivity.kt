@@ -52,7 +52,7 @@ class HomeActivity : AppCompatActivity() {
 
 
         if( DBHelper.isCharactersTableFilled() ){
-            val charCursor = DBHelper.mostrarDatos()
+            val charCursor = DBHelper.getCharacters()
 
             if( charCursor!!.moveToFirst() ){
                 do{

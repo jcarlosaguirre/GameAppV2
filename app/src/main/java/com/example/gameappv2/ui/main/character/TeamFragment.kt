@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.gameappv2.R
+import com.example.gameappv2.classes.GameCharacter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,6 +19,9 @@ import com.example.gameappv2.R
  * create an instance of this fragment.
  */
 class TeamFragment : Fragment() {
+
+    private val teamMembers: ArrayList<GameCharacter> = arrayListOf()
+
     // TODO: Rename and change types of parameters
 //    private var param1: String? = null
 //    private var param2: String? = null
