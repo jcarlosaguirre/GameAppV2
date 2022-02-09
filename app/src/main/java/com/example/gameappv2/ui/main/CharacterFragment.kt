@@ -98,6 +98,8 @@ class CharacterFragment : Fragment() {
         characterExpositor.setImageResource( character.anim_src )
         var anim = characterExpositor.drawable as AnimationDrawable
         anim.start()
+
+        Toast.makeText( activity, character.stats.getAttack().toString(), Toast.LENGTH_SHORT).show()
     }
 
     /**

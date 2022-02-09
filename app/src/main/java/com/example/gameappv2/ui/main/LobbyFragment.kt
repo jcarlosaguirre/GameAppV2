@@ -53,7 +53,6 @@ class LobbyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         Log.i("AAAAAA--------", "onViewCreated")
-        HomeActivity.DBHelper.isCharactersTableFilled()
 
         binding.button.setOnClickListener {
             HomeActivity.DBHelper.resetDatabase()

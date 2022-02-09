@@ -20,10 +20,6 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "gameappv2.db",
         onCreate( db )
     }
 
-    fun resetDatabase(){
-        onUpgrade( this.writableDatabase, 1, 1)
-    }
-
     private fun createTables( db: SQLiteDatabase? ){
         val ordenCreacion = "CREATE TABLE characters (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -37,7 +33,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "gameappv2.db",
         db!!.execSQL( ordenCreacion )
     }
 
-    fun isCharactersTableFilled(){
+    fun isCharactersTableFilled(): Boolean{
 
         val dataExists = "SELECT * FROM characters"
 
@@ -49,6 +45,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "gameappv2.db",
         if(cursor.count == 0){
             fillCharactersTable()
         }
+        return true
     }
 
     private fun fillCharactersTable(){
@@ -72,6 +69,10 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "gameappv2.db",
     }
 
 
+
+    /*
+    CRUD
+    */
     fun anyadirDato(nombre: String, email: String) {
         val datos = ContentValues()
         datos.put("nombre", nombre)
@@ -114,5 +115,13 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "gameappv2.db",
         db.close()
     }
 
+
+
+    /*
+    RESET DATABASE
+    */
+    fun resetDatabase(){
+        onUpgrade( this.writableDatabase, 1, 1)
+    }
 
 }

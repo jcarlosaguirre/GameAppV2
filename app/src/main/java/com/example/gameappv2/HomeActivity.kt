@@ -38,34 +38,36 @@ class HomeActivity : AppCompatActivity() {
 
         DBHelper = SQLiteHelper( applicationContext )
 
-//        DBHelper.isCharactersTableFilled()
 
         // Get floating action button
         fabButton = binding.fab
 
+        getCharacters()
+
         // Set sections adapter for tabs
         setTabsAndSections()
+    }
 
-        val charCursor = DBHelper.mostrarDatos()
+    private fun getCharacters(){
 
-        if( charCursor!!.moveToFirst() ){
 
-            do{
-                val name = charCursor.getString( 0 )
-                val desc = charCursor.getString( 1 )
-                val type = charCursor.getInt( 3 )
-                val imgsrc = charCursor.getString( 4 )
-                val animsrc = charCursor.getString( 5 )
-                val available = charCursor.getInt( 6 )
+        if( DBHelper.isCharactersTableFilled() ){
+            val charCursor = DBHelper.mostrarDatos()
 
-                val character = GameCharacter(name, desc, CharacterType.values()[ type ], CharacterStats(), imgsrc.toInt(), animsrc.toInt(), available)
-                characters.add( character )
+            if( charCursor!!.moveToFirst() ){
+                do{
+                    val name = charCursor.getString( 0 )
+                    val desc = charCursor.getString( 1 )
+                    val type = charCursor.getInt( 3 )
+                    val imgsrc = charCursor.getString( 4 )
+                    val animsrc = charCursor.getString( 5 )
+                    val available = charCursor.getInt( 6 )
 
-            } while( charCursor.moveToNext() )
-        }
+                    val character = GameCharacter(name, desc, CharacterType.values()[ type ], CharacterStats(), imgsrc.toInt(), animsrc.toInt(), available)
+                    characters.add( character )
 
-        if( characters.size > 0 ){
-
+                } while( charCursor.moveToNext() )
+            }
         }
     }
 
@@ -103,6 +105,7 @@ class HomeActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 changesOnTabSelected( tab.position )
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab) {
                 Toast.makeText( this@HomeActivity, "aaaa", Toast.LENGTH_SHORT ).show()
             }
